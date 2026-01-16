@@ -1,0 +1,46 @@
+#appHeader {
+    background-color: #4CAF50;   /* green background */
+    color: white;                /* white text */
+    padding: 15px;               /* spacing around text */
+    text-align: center;          /* center text */
+    font-size: 24px;             /* larger font for title */
+    border-radius: 6px;          /* optional rounded corners */
+    margin-bottom: 20px;         /* space between header and form */
+}
+
+
+.inputField {
+    border: 1px solid #ccc;     /* gray border around the input */
+    padding: 12px;              /* internal padding for comfortable typing */
+    margin-bottom: 10px;        /* spacing between inputs */
+    border-radius: 4px;         /* rounded corners */
+    width: 100%;                /* full width of the form */
+    box-sizing: border-box;     /* include padding in width calculation */
+    font-size: 16px;            /* larger text size */
+}
+
+#sendMessageForm {
+    border: 1px solid #aaa;     /* gray border around the form */
+    padding: 15px;              /* internal padding inside form */
+    border-radius: 6px;         /* rounded corners for form */
+    max-width: 400px;           /* maximum width of the form */
+    margin: 20px auto;          /* center horizontally with top/bottom margin */
+    background-color: #f9f9f9;  /* light background color */
+}
+
+.message {
+    border: 1px solid #bbb;     /* gray border around each message */
+    padding: 10px;              /* internal padding for message text */
+    margin-bottom: 8px;         /* spacing between messages */
+    border-radius: 5px;         /* rounded corners */
+    background-color: #f1f1f1;  /* light background color */
+    max-width: 80%;             /* limit message width */
+}
+
+.submitBtn {
+    padding: 10px 20px;      /* vertical and horizontal padding */
+    font-size: 16px;         /* larger text size */
+    border-radius: 5px;      /* rounded corners */
+    display: block;           /* make button take full width of content block */
+    margin: 10px auto 0 auto; /* top, horizontal center, bottom */
+}

@@ -1,5 +1,7 @@
 console.log("script.js is connected");
 
+renderMessages();
+
 const messageContainer = document.getElementById("messageContainer");
 messageContainer.classList.add("general");
 
@@ -36,6 +38,7 @@ messageForm.addEventListener("submit",async(e)=>{
           }, 3000);
           
           //render page and show all messages
+          renderMessages();
 
           userInput.value = "";
           messageInput.value = "";

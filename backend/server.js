@@ -27,4 +27,4 @@ app.get("/messages",(req,res) => {
     res.json(userMessageArr)})
 
 // Start the server and listen for incoming requests
-app.listen(port,()=>{console.error(`Quote server listening on port ${port}`);});
+app.listen(port,()=>{console.error(`Chat Server listening on port ${port}`);});
