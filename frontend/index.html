@@ -1,0 +1,30 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simple Chat Application</title>
+    </head>
+    <body>
+
+        <!-- 1. Main container for messages -->
+        <div id="messageContainer">
+            <!-- Messages will be added here dynamically -->
+        </div>
+
+        <!-- Form to send a new message -->
+        <form id="sendMessageForm">
+            <!-- Input for user name -->
+            <input type="text" id="user" placeholder="Your name" required>
+            <!-- Input for message text -->
+            <input type="text" id="text" placeholder="Your message" required>
+             <!-- Button to send the message -->
+            <button type="submit">send message</button>
+
+            <div id="errorMessage"></div>
+
+        </form>
+                
+    </body>
+    <script src="script.js"></script>
+    </html>
