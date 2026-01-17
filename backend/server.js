@@ -8,6 +8,8 @@ import cors from "cors";
 const app = express();
 
 app.use(cors());
+app.options("*", cors());
+
 
 // Define the port where the backend server will run
 const port = 3000;
