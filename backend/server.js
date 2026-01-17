@@ -18,6 +18,14 @@ const userMessageArr = [];
 
 //post endpoint
 app.post("/messages",(req,res)=>{
+    if (
+      !user ||
+      !text ||
+      typeof user !== "string" ||
+      typeof text !== "string"
+    ) {
+      return res.status(400).json({ error: "Invalid user or text" });
+    }
     userMessageArr.push(req.body);
     res.send("received");
 })

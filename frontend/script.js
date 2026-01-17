@@ -22,7 +22,7 @@ messageForm.addEventListener("submit",async(e)=>{
     } else{
         errorMessageContainer.textContent="";
         const data={user:userName,text:message};
-        const response = await fetch("http://localhost:3000/messages", {
+        const response = await fetch("https://sheida-shab-chatapp-frontend.hosting.codeyourfuture.io/messages", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -50,7 +50,7 @@ messageForm.addEventListener("submit",async(e)=>{
 })
 
 async function  renderMessages(){
-    const response = await fetch("http://localhost:3000/messages");
+    const response = await fetch("https://sheida-shab-chatapp-frontend.hosting.codeyourfuture.io/messages");
     const messageArray=await response.json();
     messageContainer.innerHTML="";
     messageArray.forEach(obj => {
