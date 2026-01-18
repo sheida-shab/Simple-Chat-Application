@@ -61,6 +61,8 @@ async function  renderMessages(){
         messageContainer.appendChild(newMessage);
     });
 
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 
 
 }
+setInterval(renderMessages, 2000);  // poll every 2 seconds
