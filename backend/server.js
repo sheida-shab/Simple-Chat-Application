@@ -1,6 +1,6 @@
 // Import Express framework to create a web server
 import express from "express";
-
+import cors from "cors";
 // Create an Express application
 const app = express();
 app.use(cors());
