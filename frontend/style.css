@@ -1,11 +1,18 @@
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 #appHeader {
     background-color: #4CAF50;   /* green background */
     color: white;                /* white text */
     padding: 15px;               /* spacing around text */
     text-align: center;          /* center text */
     font-size: 24px;             /* larger font for title */
-    border-radius: 6px;          /* optional rounded corners */
-    margin-bottom: 20px;         /* space between header and form */
+   
 }
 
 
@@ -44,3 +51,14 @@
     display: block;           /* make button take full width of content block */
     margin: 10px auto 0 auto; /* top, horizontal center, bottom */
 }
+
+#messageContainer {
+    flex: 1;                  /* takes remaining space */
+    overflow-y: auto;         /* scroll only messages */
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background-color: #fafafa;
+}
+
+
