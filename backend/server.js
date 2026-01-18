@@ -7,29 +7,50 @@ import cors from "cors";
 // Create an Express application
 const app = express();
 
+// Enable CORS for all routes
 app.use(cors());
 
 // Define the port where the backend server will run
 const port = 3000;
 
+// Enable parsing of JSON bodies in requests
 app.use(express.json());
 
+// Array to store all messages in memory
 const userMessageArr = [];
 
-//post endpoint
-
+// POST endpoint to receive a new message
 app.post("/messages", (req, res) => {
+  // Extract user and text from the request body
   const { user, text } = req.body;
+
+  // Create a new message object with a timestamp
+  const newMessage = { user, text, timestamp: Date.now() };
+
+  // Validate input: user and text must exist and be strings
   if (!user || !text || typeof user !== "string" || typeof text !== "string") {
     return res.status(400).json({ error: "Invalid user or text" });
   }
-  userMessageArr.push(req.body);
+  // Store the new message in the array
+  userMessageArr.push(newMessage);
+
+  // Respond to the client confirming the message was received
   res.send("received");
 });
 
-//get endpoint
+// GET endpoint to return messages
 app.get("/messages", (req, res) => {
-  res.json(userMessageArr);
+  // Check if a "since" query parameter is provided (timestamp)
+  const since = Number(req.query.since);
+
+  // If since is provided, filter messages sent after that timestamp
+  if (since) {
+    const newMessages = userMessageArr.filter((msg) => msg.timestamp > since);
+    res.json(newMessages);
+  } else {
+    // If no since parameter, return all messages
+    res.json(userMessageArr);
+  }
 });
 
 // Start the server and listen for incoming requests
