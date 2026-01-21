@@ -27,6 +27,9 @@ app.post("/messages", (req, res) => {
   // Create a new message object with a timestamp
   const newMessage = { user, text, timestamp: Date.now() };
 
+  // Log the received message
+  console.log(`POST /messages: ${JSON.stringify(newMessage)}`);
+
   // Validate input: user and text must exist and be strings
   if (!user || !text || typeof user !== "string" || typeof text !== "string") {
     return res.status(400).json({ error: "Invalid user or text" });
@@ -42,6 +45,14 @@ app.post("/messages", (req, res) => {
 app.get("/messages", (req, res) => {
   // Check if a "since" query parameter is provided (timestamp)
   const since = Number(req.query.since);
+
+  // Log the GET request with the "since" timestamp
+  console.log(`GET /messages?since=${since}`);
+
+  // Logging and checking for NaN in timestamp
+  if (isNaN(since)) {
+    return res.status(400).json({ error: "Invalid timestamp" });
+  }
 
   // If since is provided, filter messages sent after that timestamp
   if (since) {
