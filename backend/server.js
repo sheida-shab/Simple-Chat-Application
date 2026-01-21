@@ -26,7 +26,7 @@ const userMessageArr = [];
 // POST endpoint to receive a new message
 app.post("/messages", (req, res) => {
   // Extract user and text from the request body
-  const { user, text } = req.body;
+  let { user, text } = req.body;
 
   // Create a new message object with a timestamp
   const newMessage = { user, text, timestamp: Date.now() };
