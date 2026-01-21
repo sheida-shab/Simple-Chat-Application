@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "escape-html": "^1.0.3",
     "express": "^5.2.1"
   }
 }

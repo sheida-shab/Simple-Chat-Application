@@ -4,6 +4,10 @@ import express from "express";
 // Import CORS middleware to allow requests from other origins (e.g. frontend)
 import cors from "cors";
 
+//import escapeHtml library to prevent HTML injection
+import escapeHtml from "escape-html";
+
+
 // Create an Express application
 const app = express();
 
@@ -34,6 +38,11 @@ app.post("/messages", (req, res) => {
   if (!user || !text || typeof user !== "string" || typeof text !== "string") {
     return res.status(400).json({ error: "Invalid user or text" });
   }
+
+  // Escape any HTML or script tags to prevent XSS/injection
+  user = escapeHtml(user);
+  text = escapeHtml(text);
+
   // Store the new message in the array
   userMessageArr.push(newMessage);
 
