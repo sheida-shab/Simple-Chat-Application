@@ -38,6 +38,13 @@ messageForm.addEventListener("submit",async(e)=>{
         body: JSON.stringify(data),
       }
     );
+
+    // Check if the server responded with an error
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+
+    // If everything is ok, get the response text
     const result = await response.text();
     console.log(result);
 
@@ -83,7 +90,7 @@ async function fetchNewMessages(){
   const lastTimestamp =
     messages.length > 0 ? messages[messages.length - 1].timestamp : 0;
   //Construct the GET URL with query ?since=<timestamp>
-  const url = `https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages?since${lastTimestamp}`;
+  const url = `https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages?since=${lastTimestamp}`;
 
   //GET new messages from the server
   try {
