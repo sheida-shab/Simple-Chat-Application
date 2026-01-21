@@ -1,7 +1,11 @@
 console.log("script.js is connected");
 
-renderMessages();
+let messages =[]; // store all seen messages
 
+// Start fetching new messages repeatedly
+fetchNewMessages();
+
+// DOM references
 const messageContainer = document.getElementById("messageContainer");
 messageContainer.classList.add("general");
 
@@ -10,59 +14,91 @@ const userInput = document.getElementById("user");
 const messageInput = document.getElementById("text");
 const errorMessageContainer = document.getElementById("errorMessage");
 
+// Handle form submission
 messageForm.addEventListener("submit",async(e)=>{
-    e.preventDefault();
-    const userName=userInput.value.trim();
-    const message=messageInput.value.trim();
-    if (!userName || !message) {
-        errorMessageContainer.textContent =
-          "Both userName and messageText must be filled.";
-        errorMessageContainer.style.color="red";
-        return;  
-    } else{
-        errorMessageContainer.textContent="";
-        const data={user:userName,text:message};
-        const response = await fetch("https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        });
-        const result = await response.text();
-        console.log(result);
+  e.preventDefault();
+  const userName = userInput.value.trim();
+  const message = messageInput.value.trim();
 
-        if (result === "received") {
-          errorMessageContainer.textContent = "message sent successfully!";
-          errorMessageContainer.style.color = "green";
-          setTimeout(() => {
-            errorMessageContainer.textContent = "";
-          }, 3000);
-          
-          //render page and show all messages
-          renderMessages();
+  // Validate inputs
+  if (!userName || !message) {
+    errorMessageContainer.textContent =
+      "Both userName and messageText must be filled.";
+    errorMessageContainer.style.color = "red";
+    return;
+  } else {
+    errorMessageContainer.textContent = "";
+    const data = { user: userName, text: message };
+    // POST the new message to the server
+    const response = await fetch(
+      "https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
+    const result = await response.text();
+    console.log(result);
 
-          userInput.value = "";
-          messageInput.value = "";
-        }
+    if (result === "received") {
+      // Show success message
+      errorMessageContainer.textContent = "message sent successfully!";
+      errorMessageContainer.style.color = "green";
+      setTimeout(() => {
+        errorMessageContainer.textContent = "";
+      }, 3000);
 
+      // Add the new message to local state with timestamp
+      messages.push({ user: userName, text: message, timestamp: Date.now() });
+
+      //render page and show all messages
+      renderMessages();
+
+      // Clear input fields
+      userInput.value = "";
+      messageInput.value = "";
     }
-
-
+  }
 })
 
+// Render messages to the DOM
 async function  renderMessages(){
-    const response = await fetch("https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages");
-    const messageArray=await response.json();
-    messageContainer.innerHTML="";
-    messageArray.forEach(obj => {
-        
-        const newMessage=document.createElement("div");
-        newMessage.classList.add("message");
-        newMessage.textContent=obj.user+ ": "+obj.text;
-        messageContainer.appendChild(newMessage);
-    });
+  messageContainer.innerHTML = ""; // clear container
 
-    messageContainer.scrollTop = messageContainer.scrollHeight;
-
-
+  // Add each message element
+  messages.forEach((obj) => {
+    const newMessage = document.createElement("div");
+    newMessage.classList.add("message");
+    newMessage.textContent = obj.user + ": " + obj.text;
+    messageContainer.appendChild(newMessage);
+  });
+  // scroll to bottom
+  messageContainer.scrollTop = messageContainer.scrollHeight;
 }
-setInterval(renderMessages, 2000);  // poll every 2 seconds
+
+// Fetch new messages from the server using "fast polling"
+async function fetchNewMessages(){
+  // Find the timestamp of the last message we have
+  const lastTimestamp =
+    messages.length > 0 ? messages[messages.length - 1].timestamp : 0;
+  //Construct the GET URL with query ?since=<timestamp>
+  const url = `https://sheida-shab-chatapp-backend.hosting.codeyourfuture.io/messages?since${lastTimestamp}`;
+
+  //GET new messages from the server
+  try {
+    const response = await fetch(url);
+    const newMessages = await response.json();
+    if (newMessages.length > 0) {
+      // Use the spread operator to add each new message individually to the messages array
+      messages.push(...newMessages);
+
+      // Render updated messages
+      renderMessages();
+    }
+  } catch (error) {
+    console.error("Error fetching new messages:", error);
+  }
+  // Call this function again after 2 seconds
+  setTimeout(fetchNewMessages, 2000);
+}
