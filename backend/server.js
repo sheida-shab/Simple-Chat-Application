@@ -53,18 +53,18 @@ app.post("/messages", (req, res) => {
 // GET endpoint to return messages
 app.get("/messages", (req, res) => {
   // Check if a "since" query parameter is provided (timestamp)
-  const since = Number(req.query.since);
+  const since = req.query.since ? Number(req.query.since) : undefined;
 
   // Log the GET request with the "since" timestamp
   console.log(`GET /messages?since=${since}`);
 
   // Logging and checking for NaN in timestamp
-  if (isNaN(since)) {
+  if (since !== undefined && isNaN(since)) {
     return res.status(400).json({ error: "Invalid timestamp" });
   }
 
   // If since is provided, filter messages sent after that timestamp
-  if (since) {
+  if (since !== undefined) {
     const newMessages = userMessageArr.filter((msg) => msg.timestamp > since);
     res.json(newMessages);
   } else {
