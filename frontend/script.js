@@ -1,12 +1,12 @@
 console.log("script.js is connected");
 
-let messages =[]; // store all seen messages
+let messages = []; // store all seen messages
 
 // Start fetching new messages repeatedly
 fetchNewMessages();
- //////////////////////////////////////////////////
+//////////////////////////////////////////////////
 // DOM references
- //////////////////////////////////////////////////
+//////////////////////////////////////////////////
 
 const messageContainer = document.getElementById("messageContainer");
 messageContainer.classList.add("general");
@@ -16,11 +16,11 @@ const userInput = document.getElementById("user");
 const messageInput = document.getElementById("text");
 const errorMessageContainer = document.getElementById("errorMessage");
 
- //////////////////////////////////////////////////
+//////////////////////////////////////////////////
 // Handle form submission (sending a new message)
- //////////////////////////////////////////////////
+//////////////////////////////////////////////////
 
-messageForm.addEventListener("submit",async(e)=>{
+messageForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // prevent default form submission
 
   const userName = userInput.value.trim();
@@ -80,13 +80,13 @@ messageForm.addEventListener("submit",async(e)=>{
       messageInput.value = "";
     }
   }
-})
+});
 
 //////////////////////////////////////////////////
 // Render messages to the DOM
 //////////////////////////////////////////////////
 
-async function  renderMessages(){
+async function renderMessages() {
   messageContainer.innerHTML = ""; // clear container
 
   // Loop through each message and create its DOM elements
@@ -95,30 +95,34 @@ async function  renderMessages(){
     newMessage.classList.add("message");
 
     // Create span for the user name
-    const userSpan = document.createElement("span");
-    userSpan.classList.add("user");
-    userSpan.textContent = obj.user + ": ";
-    newMessage.appendChild(userSpan);
+    const userDiv = document.createElement("div");
+    userDiv.classList.add("user");
+    userDiv.textContent = obj.user + ": ";
+    newMessage.appendChild(userDiv);
 
     // Create span for the message text
-    const textSpan = document.createElement("span");
-    textSpan.classList.add("text");
-    textSpan.textContent = obj.text;
-    newMessage.appendChild(textSpan);
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("text");
+    textDiv.textContent = obj.text;
+    newMessage.appendChild(textDiv);
 
     // Create like button
     const likeBtn = document.createElement("button");
     likeBtn.classList.add("feedbackButtons");
     likeBtn.setAttribute("data-timestamp", obj.timestamp); // store timestamp in dataset
     likeBtn.textContent = "👍" + (obj.likes || 0);
-    newMessage.appendChild(likeBtn);
 
     // Create dislike button
     const dislikeBtn = document.createElement("button");
     dislikeBtn.classList.add("feedbackButtons");
     dislikeBtn.setAttribute("data-timestamp", obj.timestamp); // store timestamp in dataset
     dislikeBtn.textContent = "👎" + (obj.dislikes || 0);
-    newMessage.appendChild(dislikeBtn);
+
+    const feedbackDiv = document.createElement("div");
+    feedbackDiv.classList.add("feedback");
+    feedbackDiv.appendChild(likeBtn);
+    feedbackDiv.appendChild(dislikeBtn);
+    newMessage.appendChild(feedbackDiv);
 
     //////////////////////////////////////////////////
     //Add click event listener for liking a message
@@ -191,7 +195,7 @@ async function  renderMessages(){
 // Fetch new messages from the server using "fast polling"
 //////////////////////////////////////////////////
 
-async function fetchNewMessages(){
+async function fetchNewMessages() {
   // Find the timestamp of the last message we have
   const lastTimestamp =
     messages.length > 0 ? messages[messages.length - 1].timestamp : 0;

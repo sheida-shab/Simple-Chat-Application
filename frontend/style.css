@@ -44,6 +44,11 @@ body {
     max-width: 80%;             /* limit message width */
 }
 
+/* Message text */
+.text {
+  line-height: 1.4;
+}
+
 .submitBtn {
     padding: 10px 20px;      /* vertical and horizontal padding */
     font-size: 16px;         /* larger text size */
@@ -60,5 +65,30 @@ body {
     border-bottom: 1px solid #ccc;
     background-color: #fafafa;
 }
+/* Username: bold and highlighted */
+.user {
+  font-weight: bold;
+  color: #2c7be5;      /* Distinct color for username */
+  margin-bottom: 4px;  /* Space between username and message text */
+}
 
+/* Container for like / dislike buttons */
+.feedback {
+  margin-top: 6px;        /* Space above feedback buttons */
+  display: flex;
+  gap: 8px;               /* Space between buttons */
+}
 
+/* Like / Dislike buttons */
+.feedbackButtons {
+  font-size: 0.85rem;     /* Smaller buttons */
+  padding: 2px 6px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Hover effect for feedback buttons */
+.feedbackButtons:hover {
+  transform: scale(1.1);
+}
