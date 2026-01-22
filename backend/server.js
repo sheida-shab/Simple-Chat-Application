@@ -7,7 +7,6 @@ import cors from "cors";
 //import escapeHtml library to prevent HTML injection
 import escapeHtml from "escape-html";
 
-
 // Create an Express application
 const app = express();
 
@@ -26,13 +25,7 @@ const userMessageArr = [];
 // POST endpoint to receive a new message
 app.post("/messages", (req, res) => {
   // Extract user and text from the request body
-  let { user, text } = req.body;
-
-  // Create a new message object with a timestamp
-  const newMessage = { user, text, timestamp: Date.now() };
-
-  // Log the received message
-  console.log(`POST /messages: ${JSON.stringify(newMessage)}`);
+  let { user, text, likes, dislikes } = req.body;
 
   // Validate input: user and text must exist and be strings
   if (!user || !text || typeof user !== "string" || typeof text !== "string") {
@@ -43,11 +36,60 @@ app.post("/messages", (req, res) => {
   user = escapeHtml(user);
   text = escapeHtml(text);
 
+  // Create a new message object with a timestamp
+  const newMessage = {
+    user,
+    text,
+    timestamp: Date.now(),
+    likes: 0,
+    dislikes: 0,
+  };
+
+  // Log the received message
+  console.log(`POST /messages: ${JSON.stringify(newMessage)}`);
+  
   // Store the new message in the array
   userMessageArr.push(newMessage);
 
   // Respond to the client confirming the message was received
   res.send("received");
+});
+
+
+// POST endpoint to like a message
+app.post("/messages/:timestamp/like", (req, res) => {
+  const timestamp = Number(req.params.timestamp); // Get the timestamp of the message from URL params
+  // Find the message in the array by timestamp
+  const message = userMessageArr.find((m) => m.timestamp === timestamp);
+  if (message) {
+    // Increment likes (initialize to 0 if undefined)
+    message.likes = (message.likes || 0) + 1;
+
+    // Respond with the updated likes count
+    res.json({ success: true, likes: message.likes });
+  } else {
+    // If message not found, return 404
+    res.status(404).json({ error: "Message not found" });
+  }
+});
+
+// POST endpoint to dislike a message
+app.post("/messages/:timestamp/dislike", (req, res) => {
+  const timestamp = Number(req.params.timestamp); // Get the timestamp of the message from URL params
+
+  // Find the message in the array by timestamp
+  const message = userMessageArr.find(msg => msg.timestamp === timestamp);
+
+  if (message) {
+    // Increment dislikes (initialize to 0 if undefined)
+    message.dislikes = (message.dislikes || 0) + 1;
+
+    // Respond with the updated dislikes count
+    res.json({ success: true, dislikes: message.dislikes });
+  } else {
+    // If message not found, return 404
+    res.status(404).json({ error: "Message not found" });
+  }
 });
 
 // GET endpoint to return messages
